@@ -1,4 +1,4 @@
-const http = require('htpp');
+const http = require('http');
 console.log(http);
 const server = http.createServer((req, response) => {
     response.end('Section E waale bacche padhai nahi karte');
