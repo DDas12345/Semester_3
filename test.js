@@ -1,6 +1,6 @@
 const EventEmitter = require('events');
 
-const netflixCricketMatch = new EventEmitter();
+c
 
 netflixCricketMatch.on('CHAKKA', () => {
   console.log(`We are going to lose the match, but we are going to win the hearts of the audience`);
