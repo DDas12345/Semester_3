@@ -1,8 +1,8 @@
 const eventEmitter = require('events')
 const order = new eventEmitter()
-order.on('OrderPlaced',()=>{
+order.on('OrderPlaced', () => {
 
-    console .log("Food has been ordered send sms")
+    console.log("Food has been ordered send sms")
 })
 // send sms is observer , event is order placed, order is subject 
 
