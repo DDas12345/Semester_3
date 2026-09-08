@@ -1,4 +1,3 @@
 const express = require("express")
-const server = express();
-
-const PORT = 3000;
+const app = express();
+app.listen(3000)
