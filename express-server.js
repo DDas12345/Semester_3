@@ -13,7 +13,7 @@ app.get('/about', (req, res) => {
     res.send("Welcome to my About page")
 });
 app.get('/Ruhi', (req, res) => {
-    console.log("Ruhi page requested")
+    console.log("This is my request")
     res.send("Welcome to my Ruhi page")
 });
 app.listen(3000, () => {
