@@ -12,4 +12,10 @@ app.get('/about', (req, res) => {
     console.log("About page requested")
     res.send("Welcome to my About page")
 });
-app.listen(3000)
+app.get('/Ruhi', (req, res) => {
+    console.log("Ruhi page requested")
+    res.send("Welcome to my Ruhi page")
+});
+app.listen(3000, () => {
+    console.log("Server is running on port 3000")
+})
