@@ -1,13 +1,11 @@
 const express = require("express");
 
-const app = express();
-
-app.use(express.json());
+const router = express.Router();
 
 let users = [
-    { id: 1, name: "", email: "@gmail.com" },
-    { id: 2, name: "", email: "@gmail.com" },
-    { id: 3, name: "", email: "@gmail.com" }
+    { id: 1, name: "Rahul", email: "rahul@gmail.com" },
+    { id: 2, name: "Priya", email: "priya@gmail.com" },
+    { id: 3, name: "Aman", email: "aman@gmail.com" }
 ];
 
 let products = [
@@ -21,200 +19,55 @@ let orders = [
     { id: 2, userId: 2, productId: 1, quantity: 1 }
 ];
 
-app.get("/users", (req, res) => {
-    res.json(users);
+
+// GET all orders
+router.get("/", (req, res) => {
+
+    res.json(orders);
+
 });
 
 
-app.get("/users/:id", (req, res) => {
+// GET single order
+router.get("/:id", (req, res) => {
 
     const id = Number(req.params.id);
 
+    const order = orders.find((order) => {
+        return order.id === id;
+    });
+
+    if (!order) {
+        return res.status(404).json({
+            message: "Order not found"
+        });
+    }
+
+    res.json(order);
+});
+
+
+// CREATE order
+router.post("/", (req, res) => {
+
+    const { userId, productId, quantity } = req.body;
+
+    // Check user
     const user = users.find((user) => {
-        return user.id === id;
+        return user.id === userId;
     });
 
     if (!user) {
         return res.status(404).json({
-            message: "User not found"
+            message: "User does not exist"
         });
     }
 
-    res.json(user);
-});
 
-
-app.post("/users", (req, res) => {
-
-    const { name, email } = req.body;
-
-    if (!name || !email) {
-        return res.status(400).json({
-            message: "Name and email are required"
-        });
-    }
-
-    const newUser = {
-        id: users.length + 1,
-        name: name,
-        email: email
-    };
-
-    users.push(newUser);
-
-    res.status(201).json(newUser);
-});
-
-app.put("/users/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
-    const user = users.find((user) => {
-        return user.id === id;
-    });
-
-    if (!user) {
-        return res.status(404).json({
-            message: "User not found"
-        });
-    }
-
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-
-    res.json(user);
-});
-
-
-app.delete("/users/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
-    const index = users.findIndex((user) => {
-        return user.id === id;
-    });
-
-    if (index === -1) {
-        return res.status(404).json({
-            message: "User not found"
-        });
-    }
-
-    users.splice(index, 1);
-
-    res.json({
-        message: "User deleted"
-    });
-});
-
-app.get("/products", (req, res) => {
-
-    res.json(products);
-
-});
-
-
-app.get("/products/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
+    // Check product
     const product = products.find((product) => {
-        return product.id === id;
+        return product.id === productId;
     });
-
-    if (!product) {
-        return res.status(404).json({
-            message: "Product not found"
-        });
-    }
-
-    res.json(product);
-});
-
-app.post("/products", (req, res) => {
-
-    const { name, price } = req.body;
-
-    if (!name || !price) {
-        return res.status(400).json({
-            message: "Name and price required"
-        });
-    }
-
-    const product = {
-        id: products.length + 1,
-        name: name,
-        price: price
-    };
-
-    products.push(product);
-
-    res.status(201).json(product);
-});
-
-
-app.put("/products/:id", (req, res) => {
-
-    const id = Number(req.params.id);
-
-    const product = products.find((product) => {
-        return product.id === id;
-    });
-
-    if (!product) {
-        return res.status(404).json({
-            message: "Product not found"
-        });
-    }
-
-    product.name = req.body.name || product.name;
-    product.price = req.body.price || product.price;
-
-    res.json(product);
-});
-
-app.get("/orders", (req, res) => {
-
-        res.json(orders);
-
-    });
-
-app.get("/orders/:id", (req, res) => {
-
-        const id = Number(req.params.id);
-
-        const order = orders.find((order) => {
-            return order.id === id;
-        });
-
-        if (!order) {
-            return res.status(404).json({
-                message: "Order not found"
-            });
-        }
-
-        res.json(order);
-    });
-
-
-// Create order
-app.post("/orders", (req, res) => {
-
-        const { userId, productId, quantity } = req.body;
-
-        const user = users.find((user) => {
-            return user.id === userId;
-        });
-
-        if (!user) {
-            return res.status(404).json({
-                message: "User does not exist"
-            });
-        }
-
-        const product = products.find((product) => {
-            return product.id === productId;
-        });
 
     if (!product) {
         return res.status(404).json({
@@ -222,6 +75,8 @@ app.post("/orders", (req, res) => {
         });
     }
 
+
+    // Create order
     const newOrder = {
         id: orders.length + 1,
         userId: userId,
@@ -235,7 +90,8 @@ app.post("/orders", (req, res) => {
 });
 
 
-app.put("/orders/:id", (req, res) => {
+// UPDATE order
+router.put("/:id", (req, res) => {
 
     const id = Number(req.params.id);
 
@@ -254,7 +110,9 @@ app.put("/orders/:id", (req, res) => {
     res.json(order);
 });
 
-app.delete("/orders/:id", (req, res) => {
+
+// DELETE order
+router.delete("/:id", (req, res) => {
 
     const id = Number(req.params.id);
 
@@ -269,24 +127,28 @@ app.delete("/orders/:id", (req, res) => {
     }
 
     orders.splice(index, 1);
+
     res.json({
         message: "Order deleted"
     });
 });
 
 
-app.get("/users/:id/orders", (req, res) => {
+// GET orders of a particular user
+router.get("/user/:id/orders", (req, res) => {
 
     const userId = Number(req.params.id);
 
     const userOrders = orders.filter((order) => {
         return order.userId === userId;
     });
+
     res.json(userOrders);
 });
 
 
-app.get("/products/:id/orders", (req, res) => {
+// GET orders containing a particular product
+router.get("/product/:id/orders", (req, res) => {
 
     const productId = Number(req.params.id);
 
@@ -298,6 +160,4 @@ app.get("/products/:id/orders", (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
+module.exports = router;
