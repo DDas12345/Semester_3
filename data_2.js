@@ -3,7 +3,7 @@ const fs = require('fs');
 // Create big_data.csv
 fs.writeFileSync("big_data.csv", "id, username, order_value\n");
 
-for (let i = 1; i <= 1000; i++) {
+for (let i = 1; i <= 100; i++) {
     let r = Math.random() * 100;
     fs.appendFileSync(
         "big_data.csv",
