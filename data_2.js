@@ -1,18 +1,18 @@
 const fs = require('fs');
 
-// Create big_data.csv
-fs.writeFileSync("big_data.csv", "id, username, order_value\n");
+// Create data_2.csv
+fs.writeFileSync("data_2.csv", "id, username, order_value\n");
 
 for (let i = 1; i <= 50; i++) {
     let r = Math.random() * 100;
     fs.appendFileSync(
-        "big_data.csv",
+        "data_2.csv",
         `${i}, username ${i}, ${r}\n`
     );
 }
 
-// Read big_data.csv using a stream
-const stream = fs.createReadStream("big_data.csv", "utf-8");
+// Read data_2.csv using a stream
+const stream = fs.createReadStream("data_2.csv", "utf-8");
 
 let count = 0;
 
